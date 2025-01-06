@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'patients',
     'referralPhysician',
     'studies',
+    'radiologyGroup',
 ]
 
 MIDDLEWARE = [
