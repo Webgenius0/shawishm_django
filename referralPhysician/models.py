@@ -9,6 +9,7 @@ class Referralphysician(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'referralphysician'
+
+
+    def __str__(self):
+        return self.ref_phy_name

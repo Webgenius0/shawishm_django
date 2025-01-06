@@ -22,4 +22,6 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/patients/', include('patients.urls')),
     path('api/referralphysician/', include('referralPhysician.urls')),
+    path('api/radiologyGroup/', include('radiologyGroup.urls')),
+    path('api/studies/', include('studies.urls')),
 ]

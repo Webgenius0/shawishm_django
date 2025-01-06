@@ -50,16 +50,6 @@ class ReferralphysicianDetail(APIView):
         except Referralphysician.DoesNotExist:
             return Response({'error': 'Referral Physician not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    def patch(self, request, pk):
-        try:
-            referralphysician = Referralphysician.objects.get(pk=pk)
-            serializer = ReferralPhysicianSerializer(referralphysician, data=request.data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Referralphysician.DoesNotExist:
-            return Response({'error': 'Referral Physician not found'}, status=status.HTTP_404_NOT_FOUND)
         
     def delete(self, request, pk):
         try:
