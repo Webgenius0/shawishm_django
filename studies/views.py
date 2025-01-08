@@ -9,21 +9,35 @@ from .serializers import StudiesSerializer
 
 
 # Create your views here.
+def custom_response( status, success, message, data = None ):
+    return Response(
+        {
+            'status': status,
+            'success': success,
+            'message': message,
+            'data': data
+        }
+    )
+
+
 class StudiesList(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        studies = Studies.objects.all()
-        serializer = StudiesSerializer(studies, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            studies = Studies.objects.all()
+            serializer = StudiesSerializer(studies, many=True)
+            return custom_response( status=status.HTTP_200_OK, success=True, message="Studies fetched successfully", data = serializer.data)
+        except Studies.DoesNotExist:
+            return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Studies not found")
     
     def post(self, request):
         serializer = StudiesSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            study = serializer.save()
+            return custom_response( status=status.HTTP_201_CREATED, success=True, message="Study created successfully", data = serializer.data)
+        return custom_response( status=status.HTTP_400_BAD_REQUEST, success=False, message="Study not created", data = serializer.errors)
     
 
 class StudiesDetail(APIView):
@@ -34,26 +48,28 @@ class StudiesDetail(APIView):
         try:
             study = Studies.objects.get(pk=pk)
             serializer = StudiesSerializer(study)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return custom_response( status=status.HTTP_200_OK, success=True, message="Study fetched successfully", data = serializer.data)
         except Studies.DoesNotExist:
-            return Response({'error': 'Study not found'}, status=status.HTTP_404_NOT_FOUND)
+            return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Study not found")
         
-    def put(self, request, pk):
+
+    def patch(self, request, pk):
         try:
             study = Studies.objects.get(pk=pk)
-            serializer = StudiesSerializer(study, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Studies.DoesNotExist:
-            return Response({'error': 'Study not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+            return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Study not found")
+        serializer = StudiesSerializer(study, data=request.data , partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return custom_response( status=status.HTTP_200_OK, success=True, message="Study updated successfully", data = serializer.data)
+        return custom_response( status=status.HTTP_400_BAD_REQUEST, success=False, message="Study not updated", data = serializer.errors)
+    
+
     def delete(self, request, pk):
-        try:    
+        try:
             study = Studies.objects.get(pk=pk)
             study.delete()
-            return Response({'success': 'Study deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+            return custom_response( status=status.HTTP_204_NO_CONTENT, success=True, message="Study deleted successfully")
         except Studies.DoesNotExist:
-            return Response({'error': 'Study not found'}, status=status.HTTP_404_NOT_FOUND)
+            return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Study not found")
         
