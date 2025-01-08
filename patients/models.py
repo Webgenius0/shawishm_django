@@ -1,8 +1,10 @@
 from django.db import models
+from uuid import uuid4
 
 # Create your models here.
 class Patients(models.Model):
-    pat_inc_id = models.PositiveBigIntegerField(db_column='Pat_inc_id', primary_key=True)  # Field name made lowercase.
+    patients_id = models.UUIDField(primary_key=True, default=uuid4, editable=False , unique=True)
+    pat_inc_id = models.PositiveBigIntegerField(db_column='Pat_inc_id' , unique=True)  # Field name made lowercase.
     pat_inc_id_string = models.CharField(db_column='Pat_inc_id_string', max_length=50, blank=True, null=True)  # Field name made lowercase.
     pat_id = models.CharField(db_column='Pat_id', max_length=50, blank=True, null=True)  # Field name made lowercase.
     pat_name = models.CharField(db_column='Pat_name', max_length=70, blank=True, null=True)  # Field name made lowercase.
