@@ -5,7 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Studies
-from .serializers import StudiesSerializer
+from .serializers import StudiesSerializer , StudiesPOSTSerializer
+
+from patients.models import Patients
+from referralPhysician.models import Referralphysician
+from radiologyGroup.models import RadiologyGroup
+
+
 
 
 # Create your views here.
@@ -33,9 +39,34 @@ class StudiesList(APIView):
             return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Studies not found")
     
     def post(self, request):
-        serializer = StudiesSerializer(data=request.data)
+        serializer = StudiesPOSTSerializer(data=request.data)
+        patients_id = request.data.get('pat_inc_id_det' , None)
+        physicians_id = request.data.get('ref_inc' , None)
+        radiology_groups_id = request.data.get('radiology_group' , None)
+
         if serializer.is_valid():
-            study = serializer.save()
+
+            patient = None
+            if patients_id:
+                try:
+                    patient = Patients.objects.get(pk=patients_id)
+                except Patients.DoesNotExist:
+                    return custom_response(status=status.HTTP_400_BAD_REQUEST, success=False, message="Invalid Patient ID")
+                
+            physician = None
+            if physicians_id:
+                try:
+                    physician = Referralphysician.objects.get(pk=physicians_id)
+                except Referralphysician.DoesNotExist:
+                    return custom_response(status=status.HTTP_400_BAD_REQUEST, success=False, message="Invalid Physician ID")
+            radiology_group = None
+            if radiology_groups_id:
+                try:
+                    radiology_group = RadiologyGroup.objects.get(pk=radiology_groups_id)
+                except RadiologyGroup.DoesNotExist:
+                    return custom_response(status=status.HTTP_400_BAD_REQUEST, success=False, message="Invalid Radiology Group ID")
+                
+            serializer.save(pat_inc_id_det=patient, ref_inc=physician, radiology_group=radiology_group)
             return custom_response( status=status.HTTP_201_CREATED, success=True, message="Study created successfully", data = serializer.data)
         return custom_response( status=status.HTTP_400_BAD_REQUEST, success=False, message="Study not created", data = serializer.errors)
     
