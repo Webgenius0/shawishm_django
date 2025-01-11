@@ -10,7 +10,7 @@ from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationFo
 admin.site.unregister(Group)
 @admin.register(User)
 class UserAdmin(UserAdmin, ModelAdmin ):
-    list_display = ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID', 'is_staff', 'is_active')
+    list_display = ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID', 'is_staff', 'is_active' , 'date_joined', 'created_at', 'updated_at')
     list_filter = ('is_staff', 'is_active')
 
     form = UserChangeForm
@@ -18,20 +18,21 @@ class UserAdmin(UserAdmin, ModelAdmin ):
     change_password_form = AdminPasswordChangeForm
 
     fieldsets = (
-        (None, {'fields': ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
+        (None, {'fields': ('U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('created_at', 'updated_at', 'last_login',)}),
+        ('Important dates', {'fields': ('date_joined', 'last_login',)}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}
+            'fields': ( 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}
         ),
     )
 
     search_fields = ('username', 'id')
     ordering = ('username','id')
+    exclude = ('created_at', 'updated_at')
 
     def get_form(self, request, obj=None, **kwargs):
         if obj is None:  
