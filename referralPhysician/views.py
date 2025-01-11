@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,7 +7,7 @@ from .models import Referralphysician
 from .serializers import ReferralPhysicianSerializer
 
 # Create your views here.
-def custom_response(status, success ,message, data = None):
+def custom_response(status, success , message, data = None):
     return Response(
         {
             'status': status,

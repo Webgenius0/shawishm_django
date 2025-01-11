@@ -5,4 +5,10 @@ from .models import RadiologyGroup
 class RadiologyGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = RadiologyGroup
-        fields = ['rg_inc_id', 'rg_id', 'rg_name', 'rg_members']
+        fields = [
+            'Rg_Inc_ID',
+            'Rg_ID',
+            'Rg_Name',
+            'Rg_Members',
+        ]
+        read_only_fields = ['RG_Inc_ID']
