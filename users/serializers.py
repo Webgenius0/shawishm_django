@@ -1,14 +1,12 @@
 from .models import User
 from rest_framework import serializers
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import ValidationError
-from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 
 class SignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email' , 'password']
+        fields = ['id', 'username' , 'password']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -22,7 +20,6 @@ class SignUpSerializer(serializers.ModelSerializer):
 
         user = User.objects.create(
             username = validated_data['username'],
-            email = validated_data['email'],
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -30,3 +27,20 @@ class SignUpSerializer(serializers.ModelSerializer):
         return user
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'U_ID',
+            'username',
+            'U_fullname',
+            'U_sex',
+            'U_address',
+            'U_Role',
+            'U_phone',
+            'RG_ID',
+        ]
+
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
