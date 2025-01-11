@@ -77,20 +77,22 @@ class GetUserView(APIView):
     
 class UpdateUserView(APIView):
 
-    permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
-    def put(self, request):
+    def post(self, request):
         user = request.user
         serializer = ProfileSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
+
             return Response({
                 'status': status.HTTP_200_OK,
                 'success': True,
                 'message': 'User updated successfully',
                 'data': serializer.data
             }, status=status.HTTP_200_OK)
+        
         return Response({
             'status': status.HTTP_400_BAD_REQUEST,
             'success': False,
