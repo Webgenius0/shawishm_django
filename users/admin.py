@@ -1,36 +1,37 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from unfold.admin import ModelAdmin
 from .models import User
-from django.urls import reverse
-from django.utils.html import format_html
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
 
+
+admin.site.unregister(Group)
 @admin.register(User)
-class UserAdmin(UserAdmin, ModelAdmin):
-    list_display = ('username', 'email', 'is_staff', 'is_active')
+class UserAdmin(UserAdmin, ModelAdmin ):
+    list_display = ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID', 'is_staff', 'is_active')
     list_filter = ('is_staff', 'is_active')
 
-    form = UserChangeForm  # Form used when updating a user
-    add_form = UserCreationForm  # Form used when creating a new user
-    change_password_form = AdminPasswordChangeForm  # Form for password change
+    form = UserChangeForm
+    add_form = UserCreationForm
+    change_password_form = AdminPasswordChangeForm
 
     fieldsets = (
-        (None, {'fields': ('username', 'email', 'password')}),
+        (None, {'fields': ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login',)}),
+        ('Important dates', {'fields': ('created_at', 'updated_at', 'last_login',)}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'is_staff', 'is_active')}
+            'fields': ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}
         ),
     )
 
-    search_fields = ('username', 'email')
-    ordering = ('username',)
+    search_fields = ('username', 'id')
+    ordering = ('username','id')
 
     def get_form(self, request, obj=None, **kwargs):
         if obj is None:  
@@ -43,3 +44,7 @@ class UserAdmin(UserAdmin, ModelAdmin):
         if obj is None:
             return self.add_fieldsets  
         return self.fieldsets  
+
+@admin.register(Group)
+class GroupAdmin(GroupAdmin, ModelAdmin):
+    pass

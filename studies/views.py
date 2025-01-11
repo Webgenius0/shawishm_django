@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -39,6 +38,7 @@ class StudiesList(APIView):
             return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Studies not found")
     
     def post(self, request):
+        
         serializer = StudiesPOSTSerializer(data=request.data)
         patients_id = request.data.get('pat_inc_id_det' , None)
         physicians_id = request.data.get('ref_inc' , None)
@@ -59,6 +59,7 @@ class StudiesList(APIView):
                     physician = Referralphysician.objects.get(pk=physicians_id)
                 except Referralphysician.DoesNotExist:
                     return custom_response(status=status.HTTP_400_BAD_REQUEST, success=False, message="Invalid Physician ID")
+        
             radiology_group = None
             if radiology_groups_id:
                 try:
