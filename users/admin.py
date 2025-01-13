@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
@@ -5,6 +6,22 @@ from unfold.admin import ModelAdmin
 from .models import User
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
+
+class UserCreationForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+
+        def clean_password(self):
+            password = self.cleaned_data.get("password")
+            return password
+
+        def save(self, commit=True):
+            user = super().save(commit=False)
+            user.set_password(self.cleaned_data["password"])
+            if commit:
+                user.save()
+            return user
 
 
 admin.site.unregister(Group)
@@ -26,7 +43,7 @@ class UserAdmin(UserAdmin, ModelAdmin ):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ( 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}
+            'fields': ('username',  'password')}
         ),
     )
 
