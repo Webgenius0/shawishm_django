@@ -114,6 +114,7 @@ class MergePatients(APIView):
         study = Studies.objects.get(pk=pk)
         serializer = MergepatientsSerializer(instance=study, data=request.data)
         
+        
         if serializer.is_valid():
             serializer.save() 
             study_data_serializer = StudiesSerializer(study)
