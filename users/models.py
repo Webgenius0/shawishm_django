@@ -15,7 +15,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     U_Role = models.CharField(db_column='U_Role', max_length=45, null=True, blank=True)
     U_phone = models.CharField(db_column='U_Phone', max_length=45, null=True, blank=True)
     RG_ID = models.CharField( db_column='RG_ID', max_length=45, null=True, blank=True)
-    is_staff = models.BooleanField(db_column='is_staff', default=False)
+    is_staff = models.BooleanField(db_column='is_staff', default=True)
+    is_employee = models.BooleanField(db_column='is_manager', default=False)
+    is_admin = models.BooleanField(db_column='is_admin', default=False)
+    is_superuser = models.BooleanField(db_column='is_superuser', default=False)
     is_active = models.BooleanField(db_column='is_active', default=True)
     date_joined = models.DateTimeField(db_column='date_joined', default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -28,5 +31,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     def __str__(self):
         return self.username
+    
+    class Meta:
+        verbose_name = 'Users'
+        verbose_name_plural = 'Users'
     
     
