@@ -7,28 +7,11 @@ from .models import User
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
 
-class UserCreationForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ('username', 'password')
-
-        def clean_password(self):
-            password = self.cleaned_data.get("password")
-            return password
-
-        def save(self, commit=True):
-            user = super().save(commit=False)
-            user.set_password(self.cleaned_data["password"])
-            if commit:
-                user.save()
-            return user
-
-
 admin.site.unregister(Group)
 @admin.register(User)
 class UserAdmin(UserAdmin, ModelAdmin ):
-    list_display = ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID', 'is_staff', 'is_active' , 'date_joined', 'created_at', 'updated_at')
-    list_filter = ('is_staff', 'is_active')
+    list_display = ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'RG_ID', 'is_superuser','is_admin', 'is_employee', 'is_staff', 'is_active' , 'date_joined', 'created_at', 'updated_at')
+    list_filter = ('U_ID', 'username', 'U_Role', 'is_superuser','is_admin', 'is_employee', 'is_staff', 'is_active', 'date_joined')
 
     form = UserChangeForm
     add_form = UserCreationForm
@@ -36,14 +19,14 @@ class UserAdmin(UserAdmin, ModelAdmin ):
 
     fieldsets = (
         (None, {'fields': ('U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
+        ('Permissions', {'fields': ('is_superuser','is_admin', 'is_employee','is_active', 'is_staff', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('date_joined', 'last_login',)}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username',  'password')}
+            'fields': ('username',  'password1', 'password2'),}
         ),
     )
 

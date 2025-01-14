@@ -38,3 +38,7 @@ class Studies(models.Model):
 
     def __str__(self):
         return self.study_ID
+    
+    class Meta:
+        verbose_name = 'Studies'
+        verbose_name_plural = 'Studies'

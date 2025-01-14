@@ -16,3 +16,7 @@ class RadiologyGroup(models.Model):
     
     def get_members(self):
         return self.Rg_Members
+    
+    class Meta:
+        verbose_name = 'Radiology Group'
+        verbose_name_plural = 'Radiology Group'
