@@ -4,6 +4,8 @@ from patients.serializers import PatientsSerializer
 from referralPhysician.serializers import ReferralPhysicianSerializer
 from radiologyGroup.serializers import RadiologyGroupSerializer
 
+from patients.models import Patients
+
 
 
 class StudiesPOSTSerializer(serializers.ModelSerializer):
@@ -122,3 +124,26 @@ class StudiesSerializer(serializers.ModelSerializer):
         
         instance.save()
         return instance
+
+
+class MergepatientsSerializer(serializers.Serializer):
+    pat_inc_id_det = serializers.IntegerField(write_only=True)  
+
+    class Meta:
+        model = Studies
+        fields = ['pat_inc_id_det']
+
+    def update(self, instance, validated_data):
+        patient_id = validated_data.get('pat_inc_id_det')
+
+        try:
+            patient = Patients.objects.get(pk=patient_id)
+        except Patients.DoesNotExist:
+            raise serializers.ValidationError("Patient not found.")
+
+
+        instance.pat_inc_id_det = patient
+        instance.save()
+
+        return instance
+    

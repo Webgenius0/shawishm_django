@@ -37,10 +37,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             'U_sex',
             'U_address',
             'U_phone',
+            'U_Role',
             'RG_ID',
         ]
 
         extra_kwargs = {
             'password': {'read_only': True},
-            'U_Role': {'read_only': True},
         }
