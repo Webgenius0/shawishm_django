@@ -1,14 +1,9 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import serializers
 from .models import Studies
+from rest_framework import serializers
 from patients.serializers import PatientsSerializer
 from referralPhysician.serializers import ReferralPhysicianSerializer
 from radiologyGroup.serializers import RadiologyGroupSerializer
-from django.core.exceptions import ObjectDoesNotExist
 
-from patients.models import Patients
-from referralPhysician.models import Referralphysician
-from radiologyGroup.models import RadiologyGroup
 
 
 class StudiesPOSTSerializer(serializers.ModelSerializer):
@@ -19,9 +14,9 @@ class StudiesPOSTSerializer(serializers.ModelSerializer):
     class Meta:
         model = Studies
         fields = [
-            'study_inc_id',
-            'study_inc_id_string',
-            'study_id',
+            'study_Inc_ID',
+            'study_Inc_ID_string',
+            'study_ID',
             'study_uid',
             'accession_no',
             'study_description',
@@ -43,6 +38,7 @@ class StudiesPOSTSerializer(serializers.ModelSerializer):
             'study_bodyparts',
             'radiologist_id',
             'radiologist_name',
+            'othercomments',
             'pat_inc_id_det',
             'ref_inc', 
             'radiology_group'
@@ -58,9 +54,9 @@ class StudiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Studies
         fields = [
-            'study_inc_id',
-            'study_inc_id_string',
-            'study_id',
+            'study_Inc_ID',
+            'study_Inc_ID_string',
+            'study_ID',
             'study_uid',
             'accession_no',
             'study_description',
@@ -82,13 +78,14 @@ class StudiesSerializer(serializers.ModelSerializer):
             'study_bodyparts',
             'radiologist_id',
             'radiologist_name',
+            'othercomments',
             'pat_inc_id_det',
-            'ref_inc',
-            'radiology_group',
+            'ref_inc', 
+            'radiology_group'
         ]
         # read_only fields 
         read_only_fields = [
-            'study_inc_id',
+            'study_Inc_ID',
             'pat_inc_id_det',
             'ref_inc',
             'radiology_group',

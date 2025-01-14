@@ -4,4 +4,10 @@ from .models import Referralphysician
 class ReferralPhysicianSerializer(serializers.ModelSerializer):
     class Meta:
         model = Referralphysician
-        fields = ['ref_inc_id', 'ref_id', 'ref_phy_name', 'ref_phy_phone']
+        fields = [
+            'Ref_Inc_ID',
+            'Ref_ID',
+            'Ref_Phy_Name',
+            'Ref_Phy_Phone',
+        ]
+        read_only_fields = ['Ref_Inc_ID']
