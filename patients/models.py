@@ -16,3 +16,7 @@ class Patients(models.Model):
 
     def __str__(self):
         return self.Pat_Name
+    
+    class Meta:
+        verbose_name = 'Patients'
+        verbose_name_plural = 'Patients'

@@ -11,3 +11,7 @@ class Referralphysician(models.Model):
 
     def __str__(self):
         return self.Ref_Phy_Name
+    
+    class Meta:
+        verbose_name = 'Referral Physician'
+        verbose_name_plural = 'Referral Physician'
