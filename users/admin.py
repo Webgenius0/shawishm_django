@@ -17,8 +17,10 @@ class UserAdmin(UserAdmin, ModelAdmin ):
     add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
 
+    readonly_fields = ('date_joined', 'last_login')
+
     fieldsets = (
-        (None, {'fields': ('U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
+        (None, {'fields': ('U_ID', 'username',  'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
         ('Permissions', {'fields': ('is_superuser','is_admin', 'is_employee','is_active', 'is_staff', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('date_joined', 'last_login',)}),
     )
@@ -32,7 +34,6 @@ class UserAdmin(UserAdmin, ModelAdmin ):
 
     search_fields = ('username', 'id')
     ordering = ('username','id')
-    exclude = ('created_at', 'updated_at')
 
     def get_form(self, request, obj=None, **kwargs):
         if obj is None:  
