@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Studies
-from .serializers import StudiesSerializer , StudiesPOSTSerializer , MergepatientsSerializer
+from .serializers import StudiesSerializer , StudiesPOSTSerializer , MergepatientsSerializer , MergeStudiesSerializer
 
 from patients.models import Patients
 from referralPhysician.models import Referralphysician
@@ -120,3 +120,18 @@ class MergePatients(APIView):
             study_data_serializer = StudiesSerializer(study)
             return custom_response( status=status.HTTP_200_OK, success=True, message="Patients merged successfully", data = study_data_serializer.data)
         return custom_response( status=status.HTTP_400_BAD_REQUEST, success=False, message="Patients not merged", data = serializer.errors)
+    
+
+class MergeStudies(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, pk):
+        study = Studies.objects.get(pk=pk)
+        serializer = MergeStudiesSerializer(instance=study, data=request.data , partial=True)   
+        
+        if serializer.is_valid():
+            serializer.save() 
+            study_data_serializer = StudiesSerializer(study)
+            return custom_response( status=status.HTTP_200_OK, success=True, message="Studies merged successfully", data = study_data_serializer.data)
+        return custom_response( status=status.HTTP_400_BAD_REQUEST, success=False, message="Studies not merged", data = serializer.errors)  

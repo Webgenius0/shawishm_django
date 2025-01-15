@@ -147,3 +147,52 @@ class MergepatientsSerializer(serializers.Serializer):
 
         return instance
     
+
+class MergeStudiesSerializer(serializers.ModelSerializer):
+    pat_inc_id_det = PatientsSerializer() 
+    ref_inc = ReferralPhysicianSerializer()
+    radiology_group = RadiologyGroupSerializer()
+
+    class Meta:
+        model = Studies
+        fields = [
+            'accession_no',
+            'images',
+            'series',
+            'othercomments',
+            'pat_inc_id_det',
+            'ref_inc', 
+            'radiology_group'
+        ]
+
+    
+    def update(self, instance, validated_data):
+
+        patient_data = validated_data.pop('pat_inc_id_det', None)
+        ref_data = validated_data.pop('ref_inc', None)
+        radiology_group_data = validated_data.pop('radiology_group', None)
+
+        if patient_data:
+            if isinstance(patient_data, dict):
+                patient_serializer = PatientsSerializer(instance.pat_inc_id_det, data=patient_data, partial=True)
+                if patient_serializer.is_valid(raise_exception=True):
+                    patient_serializer.save()
+
+        if ref_data:
+            if isinstance(ref_data, dict):  
+                ref_serializer = ReferralPhysicianSerializer(instance.ref_inc, data=ref_data, partial=True)
+                if ref_serializer.is_valid(raise_exception=True):
+                    ref_serializer.save()
+
+        if radiology_group_data:
+            if isinstance(radiology_group_data, dict):
+                radiology_group_serializer = RadiologyGroupSerializer(instance.radiology_group, data=radiology_group_data, partial=True)
+                if radiology_group_serializer.is_valid(raise_exception=True):
+                    radiology_group_serializer.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        instance.save()
+        return instance
+    
