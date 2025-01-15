@@ -25,7 +25,7 @@ class Studies(models.Model):
     report_url = models.CharField(db_column='Report_Url', max_length=200, blank=True, null=True)  # Field name made lowercase.
     images = models.IntegerField(db_column='Images', blank=True, null=True)  # Field name made lowercase.
     series = models.IntegerField(db_column='Series', blank=True, null=True)  # Field name made lowercase.
-    status_reported = models.CharField(db_column='Status_Reported', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    status_reported = models.CharField(db_column='Status_Reported', max_length=25, blank=True, null=True)  # Field name made lowercase.
     report_verifier = models.CharField(db_column='Report_Verifier', max_length=50, blank=True, null=True)  # Field name made lowercase.
     institution_name = models.CharField(db_column='Institution_Name', max_length=50, blank=True, null=True)  # Field name made lowercase.
     study_bodyparts = models.CharField(db_column='Study_BodyParts', max_length=200, blank=True, null=True)  # Field name made lowercase.
