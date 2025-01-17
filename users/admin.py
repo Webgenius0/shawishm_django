@@ -6,7 +6,7 @@ from unfold.admin import ModelAdmin
 from .models import User
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
-
+    
 admin.site.unregister(Group)
 @admin.register(User)
 class UserAdmin(UserAdmin, ModelAdmin ):
@@ -46,6 +46,7 @@ class UserAdmin(UserAdmin, ModelAdmin ):
         if obj is None:
             return self.add_fieldsets  
         return self.fieldsets  
+    
 
 @admin.register(Group)
 class GroupAdmin(GroupAdmin, ModelAdmin):
