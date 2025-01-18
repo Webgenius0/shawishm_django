@@ -65,7 +65,7 @@ class LogoutView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    def get(self, request):
         logout(request)
         return Response({
             'status': status.HTTP_200_OK,
