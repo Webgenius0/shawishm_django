@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate , logout
 from .serializers import SignUpSerializer , ProfileSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -60,6 +60,19 @@ class SignInView(APIView):
         }, status=status.HTTP_401_UNAUTHORIZED)
     
 
+class LogoutView(APIView):
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        logout(request)
+        return Response({
+            'status': status.HTTP_200_OK,
+            'success': True,
+            'message': 'Logout successful',
+        }, status=status.HTTP_200_OK)
+
 class GetUserView(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -100,6 +113,7 @@ class UpdateUserView(APIView):
             'data': serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
     
+
 
 class ChangePasswordView(APIView):
 
