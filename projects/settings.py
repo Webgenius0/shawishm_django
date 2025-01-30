@@ -218,9 +218,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-CROSS_ORIGIN_ALLOW_ALL = True
-
-UNFOLD = {
-    "SITE_TITLE": "Doctor Admin Portal",
-
-}
+CORS_ALLOW_ALL_ORIGINS = True
