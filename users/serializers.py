@@ -39,6 +39,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'U_phone',
             'U_Role',
             'RG_ID',
+            'visible',
         ]
 
         extra_kwargs = {
