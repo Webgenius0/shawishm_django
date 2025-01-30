@@ -21,6 +21,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(db_column='is_superuser', default=False)
     is_active = models.BooleanField(db_column='is_active', default=True)
     date_joined = models.DateTimeField(db_column='date_joined', default=timezone.now)
+
+    visible = models.JSONField(default=list, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     

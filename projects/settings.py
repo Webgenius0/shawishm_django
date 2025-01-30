@@ -219,3 +219,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+UNFOLD ={
+    "SITE_TITLE": "Doctor Portal",
+}
