@@ -10,7 +10,7 @@ from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationFo
 admin.site.unregister(Group)
 @admin.register(User)
 class UserAdmin(UserAdmin, ModelAdmin ):
-    list_display = ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'RG_ID', 'is_superuser','is_admin', 'is_employee', 'is_staff', 'is_active' , 'date_joined', 'created_at', 'updated_at')
+    list_display = ('id', 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'RG_ID', 'visible', 'is_superuser','is_admin', 'is_employee', 'is_staff', 'is_active' , 'date_joined', 'created_at', 'updated_at')
     list_filter = ('U_ID', 'username', 'U_Role', 'is_superuser','is_admin', 'is_employee', 'is_staff', 'is_active', 'date_joined')
 
     form = UserChangeForm
@@ -20,8 +20,8 @@ class UserAdmin(UserAdmin, ModelAdmin ):
     readonly_fields = ('date_joined', 'last_login')
 
     fieldsets = (
-        (None, {'fields': ('U_ID', 'username',  'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
-        ('Permissions', {'fields': ('is_superuser','is_admin', 'is_employee','is_active', 'is_staff', 'groups', 'user_permissions')}),
+        (None, {'fields': ('U_ID', 'username',  'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID', 'visible')}),
+        ('Permissions', {'fields': ('is_superuser','is_admin', 'is_employee','is_active', 'is_staff',)}),
         ('Important dates', {'fields': ('date_joined', 'last_login',)}),
     )
 
