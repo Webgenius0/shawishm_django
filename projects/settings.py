@@ -93,29 +93,18 @@ WSGI_APPLICATION = 'projects.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'reigeeky_shawishm',
+    #     'USER': 'reigeeky_shawishm',
+    #     'PASSWORD': 'NGpAgXp9ySQ8NFi',
+    #     'HOST': '88.198.34.212',
+    #     'PORT': '3306',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'reigeeky_shawishm',
-        'USER': 'reigeeky_shawishm',
-        'PASSWORD': 'NGpAgXp9ySQ8NFi',
-        'HOST': '88.198.34.212',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-    # 'default':{
-    #     'ENGINE': 'mssql',
-    #     'NAME': 'shahwishm',
-    #     'USER': 'root',
-    #     'PASSWORD': 'root',
-    #     'HOST': 'localhost/SQLEXPRESS',
-    #     'PORT': '1433',
-    #     'OPTIONS': {
-    #         'driver': 'ODBC Driver 17 for SQL Server',
-    #     }
-    # }
-    # 'sqlite': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
 }
 
 
