@@ -17,9 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path , include
 
+admin.site.index_title = "Welcome to Doctor Portal"
+admin.site.site_header = "Doctor Portal"
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
     path('api/patients/', include('patients.urls')),
     path('api/referralphysician/', include('referralPhysician.urls')),
+    path('api/radiologyGroup/', include('radiologyGroup.urls')),
+    path('api/studies/', include('studies.urls')),
 ]

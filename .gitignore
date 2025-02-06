@@ -9,7 +9,7 @@ venv.bak/
 
 __pycache__/
 
-db.sqlite3
+# db.sqlite3
 
 ### Django ###
 *.log
@@ -23,3 +23,5 @@ media
 # Byte-compiled / optimized / DLL files
 *.py[cod]
 *$py.class
+
+staticfiles/
