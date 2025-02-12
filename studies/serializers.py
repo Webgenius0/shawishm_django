@@ -52,9 +52,9 @@ class StudiesPOSTSerializer(serializers.ModelSerializer):
 
 class StudiesSerializer(serializers.ModelSerializer):
     
-    pat_inc_id_det = PatientsSerializer(required=False)
-    ref_inc = ReferralPhysicianSerializer(required=False)
-    radiology_group = RadiologyGroupSerializer(required=False)
+    pat_inc_id_det = PatientsSerializer(required=False, write_only=True)
+    ref_inc = serializers.PrimaryKeyRelatedField(queryset=Referralphysician.objects.all(), required=False, write_only=True)
+    radiology_group = serializers.PrimaryKeyRelatedField(queryset=RadiologyGroup.objects.all(), write_only=True, required=False)
     class Meta:
         model = Studies
         fields = [
@@ -83,48 +83,37 @@ class StudiesSerializer(serializers.ModelSerializer):
             'radiologist_id',
             'radiologist_name',
             'othercomments',
-            'pat_inc_id_det',
-            'ref_inc', 
-            'radiology_group'
-        ]
-        # read_only fields 
-        read_only_fields = [
-            'study_Inc_ID',
+            
             'pat_inc_id_det',
             'ref_inc',
             'radiology_group',
+        ] 
+        read_only_fields = [
+            'study_Inc_ID',
         ]
     
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['pat_inc_id_det'] = PatientsSerializer(instance.pat_inc_id_det).data
+        data['ref_inc'] = ReferralPhysicianSerializer(instance.ref_inc).data
+        data['radiology_group'] = RadiologyGroupSerializer(instance.radiology_group).data
+        return data
 
     def update(self, instance, validated_data):
-
         patient_data = validated_data.pop('pat_inc_id_det', None)
-        ref_data = validated_data.pop('ref_inc', None)
-        radiology_group_data = validated_data.pop('radiology_group', None)
+
 
         if patient_data:
-            if isinstance(patient_data, dict):
-                patient_serializer = PatientsSerializer(instance.pat_inc_id_det, data=patient_data, partial=True)
-                if patient_serializer.is_valid(raise_exception=True):
-                    patient_serializer.save()
+            patient_data_id = instance.pat_inc_id_det.Pat_Inc_ID
+            get_patient_data = Patients.objects.get(pk=patient_data_id)
+            serializers = PatientsSerializer(get_patient_data, data=patient_data, partial=True)
+            if serializers.is_valid(raise_exception=True):
+                serializers.save()
 
-        if ref_data:
-            if isinstance(ref_data, dict):  
-                ref_serializer = ReferralPhysicianSerializer(instance.ref_inc, data=ref_data, partial=True)
-                if ref_serializer.is_valid(raise_exception=True):
-                    ref_serializer.save()
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
 
-
-        if radiology_group_data:
-            if isinstance(radiology_group_data, dict):
-                radiology_group_serializer = RadiologyGroupSerializer(instance.radiology_group, data=radiology_group_data, partial=True)
-                if radiology_group_serializer.is_valid(raise_exception=True):
-                    radiology_group_serializer.save()
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        
-        instance.save()
+            instance.save()
         return instance
 
 

@@ -21,7 +21,7 @@ class UserCustomAdmin(UserAdmin, ModelAdmin ):
 
     fieldsets = (
         (None, {'fields': ('U_ID', 'username',  'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
-        ('Permissions', {'fields': ('is_superuser','is_admin', 'is_employee','is_active', 'is_staff',)}),
+        ('Permissions', {'fields': ('is_superuser','is_admin', 'is_employee','is_active', 'is_staff','groups')}),
         ('Important dates', {'fields': ('date_joined', 'updated_at', 'last_login')}),
     )
 
