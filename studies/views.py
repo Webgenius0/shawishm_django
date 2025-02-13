@@ -93,7 +93,10 @@ class StudiesDetail(APIView):
         serializer = StudiesSerializer(study, data=request.data , partial=True)
         if serializer.is_valid():
             serializer.save()
-            return custom_response( status=status.HTTP_200_OK, success=True, message="Study updated successfully", data = serializer.data)
+            study.refresh_from_db()
+            response = StudiesSerializer(study)
+
+            return custom_response( status=status.HTTP_200_OK, success=True, message="Study updated successfully", data = response.data)
         return custom_response( status=status.HTTP_400_BAD_REQUEST, success=False, message="Study not updated", data = serializer.errors)
     
 
