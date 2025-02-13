@@ -7,7 +7,7 @@ from .models import Patients
 class PatientsAdmin(ModelAdmin):
     list_display = ( 'Pat_ID', 'Pat_Inc_ID_string', 'Pat_Name', 'Pat_Sex', 'Pat_DOB', 'Pat_Phone', 'Notes', 'created_at', 'updated_at')
     search_fields = ('Pat_Name','Pat_Phone')
-    list_filter = ('Pat_Name', 'Pat_Phone')
+    # list_filter = ('Pat_Name', 'Pat_Phone')
 
     list_display_links =[
         'Pat_Inc_ID_string',

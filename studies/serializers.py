@@ -91,7 +91,6 @@ class StudiesSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'study_Inc_ID',
         ]
-    
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['pat_inc_id_det'] = PatientsSerializer(instance.pat_inc_id_det).data
@@ -110,11 +109,12 @@ class StudiesSerializer(serializers.ModelSerializer):
             if serializers.is_valid(raise_exception=True):
                 serializers.save()
 
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
 
-            instance.save()
+        instance.save()
         return instance
+
 
 
 class AssignStudiesSerializer(serializers.Serializer):
