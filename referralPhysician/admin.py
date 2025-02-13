@@ -6,10 +6,11 @@ from .models import Referralphysician
 @admin.register(Referralphysician)
 class ReferralphysicianAdmin(ModelAdmin):
     list_display = ('Ref_ID', 'Ref_Phy_Name', 'Ref_Phy_Phone', 'created_at', 'updated_at')
-    search_fields = ('Ref_ID', 'Ref_Phy_Name', 'Ref_Phy_Phone')
-    list_filter = ('Ref_ID', 'Ref_Phy_Name', 'Ref_Phy_Phone')
+    search_fields = ('Ref_Phy_Name', 'Ref_Phy_Phone')
+    list_filter = ('Ref_Phy_Name', 'Ref_Phy_Phone')
 
     list_display_links = [
         'Ref_ID',
         'Ref_Phy_Name',
     ]
+    ordering = ('created_at',)
