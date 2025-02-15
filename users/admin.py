@@ -41,6 +41,11 @@ class UserCustomAdmin(UserAdmin, ModelAdmin ):
         'username',
     ]
 
+    list_per_page = 15
+
+    search_help_text = "Search by username, id"
+
+
     def get_form(self, request, obj=None, **kwargs):
         if obj is None:  
             kwargs['form'] = self.add_form  

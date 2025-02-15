@@ -6,7 +6,7 @@ from .models import RadiologyGroup
 @admin.register(RadiologyGroup)
 class RadiologyGroupAdmin(ModelAdmin):
     list_display = ('Rg_ID', 'Rg_Name', 'Rg_Members', 'created_at', 'updated_at')
-    search_fields = ('Rg_Name', 'Rg_Members')
+    search_fields = ('Rg_ID', 'Rg_Name', 'Rg_Members')
     # list_filter = ('Rg_Name', 'Rg_Members')
 
     list_display_links = [
@@ -14,3 +14,7 @@ class RadiologyGroupAdmin(ModelAdmin):
         'Rg_Name',
     ]
     ordering = ('created_at',)
+
+    list_per_page = 15
+
+    search_help_text = "Search by Rg ID, Rg Name, Rg Members"
