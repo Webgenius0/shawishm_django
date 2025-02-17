@@ -101,9 +101,17 @@ DATABASES = {
     #     'HOST': '88.198.34.212',
     #     'PORT': '3306',
     # }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tc_portal_test',
+        'USER': 'shawishm',
+        'PASSWORD': 'P@ssw0rd',
+        'HOST': '109.237.204.71',
+        'PORT': '3306',
     }
 }
 
@@ -223,5 +231,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 UNFOLD ={
     "SITE_TITLE": "Doctor Portal",
     "SITE_URL": "https://shawishm-beige.vercel.app/",
-
+    "SHOW_BACK_BUTTON": True,
 }
