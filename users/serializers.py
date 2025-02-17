@@ -39,6 +39,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             'U_phone',
             'U_Role',
             'RG_ID',
+            'is_superuser',
+            'is_admin',
+            'is_ref_physician_user',
+            'is_radiologist_user',
             'visible',
         ]
 

@@ -30,10 +30,25 @@ class StudiesList(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+
+        user = request.user
+
         try:
-            studies = Studies.objects.all()
-            serializer = StudiesSerializer(studies, many=True)
-            return custom_response( status=status.HTTP_200_OK, success=True, message="Studies fetched successfully", data = serializer.data)
+            studies = Studies.objects.select_related('pat_inc_id_det', 'ref_inc', 'radiology_group')
+
+            if user.is_superuser or user.is_admin:
+                serializer = StudiesSerializer(studies, many=True)
+                return custom_response( status=status.HTTP_200_OK, success=True, message="Studies fetched successfully for admin or superadmin", data = serializer.data)
+            elif user.is_ref_physician_user:
+                filtered_studies = studies.filter(ref_inc__Ref_Phy_Name = user.U_fullname)
+                serializer = StudiesSerializer(filtered_studies, many=True)
+                return custom_response( status=status.HTTP_200_OK, success=True, message="Studies fetched successfully for Referral Physician", data = serializer.data)
+            elif user.is_radiologist_user:
+                filtered_studies = studies.filter(radiology_group__Rg_Name = user.U_fullname)
+                serializer = StudiesSerializer(filtered_studies, many=True)
+                return custom_response( status=status.HTTP_200_OK, success=True, message="Studies fetched successfully for Radiologist", data = serializer.data)
+            else:
+                return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="User is not authorized to access the data")
         except Studies.DoesNotExist:
             return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Studies not found")
     
@@ -78,7 +93,7 @@ class StudiesDetail(APIView):
 
     def get(self, request, pk):
         try:
-            study = Studies.objects.get(pk=pk)
+            study = Studies.objects.select_related('pat_inc_id_det', 'ref_inc', 'radiology_group').get(pk=pk)
             serializer = StudiesSerializer(study)
             return custom_response( status=status.HTTP_200_OK, success=True, message="Study fetched successfully", data = serializer.data)
         except Studies.DoesNotExist:
@@ -87,7 +102,7 @@ class StudiesDetail(APIView):
 
     def patch(self, request, pk):
         try:
-            study = Studies.objects.get(pk=pk)
+            study = Studies.objects.select_related('pat_inc_id_det', 'ref_inc', 'radiology_group').get(pk=pk)
         except Studies.DoesNotExist:
             return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Study not found")
         serializer = StudiesSerializer(study, data=request.data , partial=True)
@@ -102,7 +117,7 @@ class StudiesDetail(APIView):
 
     def delete(self, request, pk):
         try:
-            study = Studies.objects.get(pk=pk)
+            study = Studies.objects.select_related('pat_inc_id_det', 'ref_inc', 'radiology_group').get(pk=pk)
             study.delete()
             return custom_response( status=status.HTTP_204_NO_CONTENT, success=True, message="Study deleted successfully")
         except Studies.DoesNotExist:
@@ -115,7 +130,7 @@ class AssignStudies(APIView):
 
     def put(self, request, pk):
         try:
-            study = Studies.objects.get(pk=pk)
+            study = Studies.objects.select_related('pat_inc_id_det', 'ref_inc', 'radiology_group').get(pk=pk)
         except Studies.DoesNotExist:
             return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Study not found")
         serializer = StudiesSerializer(study, data=request.data , partial=True)
@@ -131,7 +146,7 @@ class MergePatients(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request, pk):
-        study = Studies.objects.get(pk=pk)
+        study = Studies.objects.select_related('pat_inc_id_det', 'ref_inc', 'radiology_group').get(pk=pk)
         serializer = MergepatientsSerializer(instance=study, data=request.data)
         
         
@@ -147,7 +162,7 @@ class MergeStudies(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request, pk):
-        study = Studies.objects.get(pk=pk)
+        study = Studies.objects.select_related('pat_inc_id_det', 'ref_inc', 'radiology_group').get(pk=pk)
         serializer = MergeStudiesSerializer(instance=study, data=request.data , partial=True)   
         
         if serializer.is_valid():
