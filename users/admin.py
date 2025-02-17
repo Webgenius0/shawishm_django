@@ -10,8 +10,8 @@ from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationFo
 admin.site.unregister(Group)
 @admin.register(User)
 class UserCustomAdmin(UserAdmin, ModelAdmin ):
-    list_display = ( 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'RG_ID', 'is_superuser','is_admin', 'is_employee', 'is_staff', 'is_active' , 'date_joined', 'updated_at')
-    list_filter = ('U_Role', 'is_superuser','is_admin', 'is_employee', 'is_staff', 'is_active',)
+    list_display = ( 'U_ID', 'username', 'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'RG_ID', 'is_superuser','is_admin', 'is_ref_physician_user','is_radiologist_user', 'is_staff', 'is_active' , 'date_joined', 'updated_at')
+    list_filter = ('U_Role', 'is_superuser','is_admin', 'is_ref_physician_user', 'is_radiologist_user', 'is_active',)
 
     form = UserChangeForm
     add_form = UserCreationForm
@@ -21,7 +21,7 @@ class UserCustomAdmin(UserAdmin, ModelAdmin ):
 
     fieldsets = (
         (None, {'fields': ('U_ID', 'username',  'U_fullname', 'U_sex', 'U_address', 'U_Role', 'U_phone', 'password', 'RG_ID')}),
-        ('Permissions', {'fields': ('is_superuser','is_admin', 'is_employee','is_active', 'is_staff','groups')}),
+        ('Permissions', {'fields': ('is_superuser','is_admin', 'is_active', 'is_ref_physician_user', 'is_radiologist_user', 'is_staff', 'groups')}),
         ('Important dates', {'fields': ('date_joined', 'updated_at', 'last_login')}),
     )
 

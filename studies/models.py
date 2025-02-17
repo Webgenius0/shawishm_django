@@ -37,7 +37,7 @@ class Studies(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.study_ID
+        return self.study_ID if self.study_ID else ''
     
     class Meta:
         verbose_name = 'Studies'

@@ -12,7 +12,7 @@ class RadiologyGroup(models.Model):
 
 
     def __str__(self):
-        return self.Rg_Name
+        return self.Rg_Name if self.Rg_Name else ""
     
     def get_members(self):
         return self.Rg_Members
