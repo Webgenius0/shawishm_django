@@ -16,7 +16,10 @@ class StudiesAdmin(ModelAdmin):
     ]
     ordering = ('created_at',)
 
-    list_per_page = 15
+    list_per_page = 10
+
+    change_form_show_cancel_button = True
+
 
 
     search_help_text = "Search by study ID, Branch name, Institution name"

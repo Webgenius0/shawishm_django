@@ -7,7 +7,6 @@ from .models import Referralphysician
 class ReferralphysicianAdmin(ModelAdmin):
     list_display = ('Ref_ID', 'Ref_Phy_Name', 'Ref_Phy_Phone', 'created_at', 'updated_at')
     search_fields = ('Ref_ID', 'Ref_Phy_Name', 'Ref_Phy_Phone')
-    # list_filter = ('Ref_Phy_Name', 'Ref_Phy_Phone')
 
     list_display_links = [
         'Ref_ID',
@@ -16,6 +15,8 @@ class ReferralphysicianAdmin(ModelAdmin):
     ordering = ('created_at',)
     
     list_per_page = 15
+
+    change_form_show_cancel_button = True
 
 
     search_help_text = "Search by Ref ID, Ref Phy Name, Ref Phy Phone"

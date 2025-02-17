@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Studies
-from .serializers import StudiesSerializer , StudiesPOSTSerializer , MergepatientsSerializer , MergeStudiesSerializer , AssignStudiesSerializer
+from .serializers import StudiesSerializer , StudiesPOSTSerializer , MergepatientsSerializer , MergeStudiesSerializer
 
 from patients.models import Patients
 from referralPhysician.models import Referralphysician
@@ -114,13 +114,16 @@ class AssignStudies(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request, pk):
-        study = Studies.objects.get(pk=pk)
-        serializer = AssignStudiesSerializer(instance=study, data=request.data)
-        
+        try:
+            study = Studies.objects.get(pk=pk)
+        except Studies.DoesNotExist:
+            return custom_response( status=status.HTTP_404_NOT_FOUND, success=False, message="Study not found")
+        serializer = StudiesSerializer(study, data=request.data , partial=True)
         if serializer.is_valid():
-            serializer.save() 
-            study_data_serializer = StudiesSerializer(study)
-            return custom_response( status=status.HTTP_200_OK, success=True, message="Studies assigned successfully", data = study_data_serializer.data)
+            serializer.save()
+            study.refresh_from_db()
+            response = StudiesSerializer(study)
+            return custom_response( status=status.HTTP_200_OK, success=True, message="Studies assigned successfully", data = response.data)
         return custom_response( status=status.HTTP_400_BAD_REQUEST, success=False, message="Studies not assigned", data = serializer.errors)
 
 class MergePatients(APIView):

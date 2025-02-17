@@ -45,6 +45,9 @@ class UserCustomAdmin(UserAdmin, ModelAdmin ):
 
     search_help_text = "Search by username, id"
 
+    change_form_show_cancel_button = True
+
+
 
     def get_form(self, request, obj=None, **kwargs):
         if obj is None:  
