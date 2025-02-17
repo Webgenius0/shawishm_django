@@ -114,40 +114,8 @@ class StudiesSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+    
 
-
-
-class AssignStudiesSerializer(serializers.Serializer):
-
-    ref_inc = serializers.IntegerField(write_only=True)
-    radiology_group = serializers.IntegerField(write_only=True)
-    othercomments = serializers.CharField(required=False, allow_blank=True)
-
-    class Meta:
-        model = Studies
-        fields = ['ref_inc', 'radiology_group', 'othercomments']
-
-    def update(self, instance, validated_data):
-        ref_inc = validated_data.get('ref_inc')
-        radiology_group = validated_data.get('radiology_group')
-        othercomments = validated_data.get('othercomments', instance.othercomments)
-
-        try:
-            ref_inc = Referralphysician.objects.get(pk=ref_inc)
-        except Referralphysician.DoesNotExist:
-            raise serializers.ValidationError("Referral Physician not found.")
-
-        try:
-            radiology_group = RadiologyGroup.objects.get(pk=radiology_group)
-        except RadiologyGroup.DoesNotExist:
-            raise serializers.ValidationError("Radiology Group not found.")
-
-        instance.ref_inc = ref_inc
-        instance.radiology_group = radiology_group
-        instance.othercomments = othercomments
-        instance.save()
-
-        return instance
 
 class MergepatientsSerializer(serializers.Serializer):
     pat_inc_id_det = serializers.IntegerField(write_only=True)  
