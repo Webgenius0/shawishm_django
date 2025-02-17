@@ -14,8 +14,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     User_Role = (
+        ('ReferralPhysician', 'Referral Physician'),
+        ('Radiologist', 'Radiologist'),
         ('Admin', 'Admin'),
-        ('SuperAdmin', 'SuperAdmin'),
+        ('SuperAdmin', 'Super Admin'),
     )
 
 
@@ -28,7 +30,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     U_phone = models.CharField(db_column='U_Phone', max_length=45, null=True, blank=True , verbose_name='Phone Number')
     RG_ID = models.CharField( db_column='RG_ID', max_length=45, null=True, blank=True, verbose_name='RG_ID')
     is_staff = models.BooleanField(db_column='is_staff', default=True)
-    is_employee = models.BooleanField(db_column='is_manager', default=False, verbose_name='Employee')
+    is_ref_physician_user = models.BooleanField(db_column='is_ref_physician', default=False, verbose_name='Referral Physician')
+    is_radiologist_user = models.BooleanField(db_column='is_radiologist', default=False, verbose_name='Radiologist')
     is_admin = models.BooleanField(db_column='is_admin', default=False, verbose_name='Admin')
     is_superuser = models.BooleanField(db_column='is_superuser', default=False, verbose_name='Super Admin')
     is_active = models.BooleanField(db_column='is_active', default=True, verbose_name='Active')
@@ -44,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
     
     def __str__(self):
-        return self.username
+        return self.username if self.username else ''
     
     class Meta:
         verbose_name = 'Users'

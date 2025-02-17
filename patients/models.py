@@ -15,7 +15,7 @@ class Patients(models.Model):
 
 
     def __str__(self):
-        return self.Pat_Name
+        return self.Pat_Name if self.Pat_Name else ""
     
     class Meta:
         verbose_name = 'Patients'

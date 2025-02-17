@@ -10,7 +10,7 @@ class Referralphysician(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.Ref_Phy_Name
+        return self.Ref_Phy_Name if self.Ref_Phy_Name else ""
     
     class Meta:
         verbose_name = 'Referral Physician'
